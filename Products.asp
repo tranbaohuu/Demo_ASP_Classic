@@ -1,16 +1,14 @@
 ﻿<!--#include file="Master_Page/Header.asp"-->
 <!--#include file="Processes/ConnectionDB.asp"-->
 
-
 <br />
 <br />
 <br />
 <br />
 <br />
-
 
 <%
-    
+
     Dim conn
     Dim recordSet
     Set conn = Server.CreateObject("ADODB.Connection")
@@ -18,32 +16,34 @@
 
     Set recordSet = Server.CreateObject("ADODB.Recordset")
 
+    tempPage = 1
 
-    query = "select * from sanpham"
+    'get Query String to select, check null or not
 
+    if not   IsEmpty(Request("page")) then
+    tempPage = Request("page")
+    end if
+
+    'query = "select * from sanpham"
+    query = "SELECT * FROM dbo.sanpham ORDER BY ID OFFSET (" & tempPage -1 & ")*12 ROWS FETCH NEXT 12 ROWS only"
     conn.Open connectionString
 
     recordSet.Open query,conn
 
-
     if recordSet.EOF then
-    
+
     Response.Write("No Record")
 
     else
 
 %>
 
-
-<div id="zoneUpdateAjax">
+<div id="">
     <div class="row">
         <%
 
     do while not  recordSet.EOF
         %>
-
-
-
 
         <div class="col-md-4">
             <div class="thumbnail">
@@ -52,7 +52,6 @@
                     <p class="text-center" style="font-size: large;">
                         <a href="#"><%=recordSet("TEN") %></a>
                     </p>
-
                 </div>
 
                 <img class="img-thumbnail" data-original="#" width="320" height="240" alt="Không có hình" src="IMAGES/<%=recordSet("IMG_URL")%>" style="display: block; width: 320px; height: 240px;">
@@ -64,41 +63,51 @@
             </div>
         </div>
 
-
-
-
-
-
         <%
-  
-
 
     recordSet.MoveNext
     loop
         %>
     </div>
-
-
 </div>
 
 <%
     end if
-    
 
+    recordSet.Close()
 
+    conn.Close()
 
-
-
-
-
-
+    'đang dính lỗi tính phân trang, hiện cần 1 câu select để lấy ra tổng số record đang có /12 (12 sản phẩm 1 trang) để tính ra số trang sẽ có
 
 %>
 
+<ul id="pagination-demo" class="pagination-sm"></ul>
 
+<!--#include file="Processes/Proccess_SanPham.asp"-->
 
+<%
 
+    'Call function from Process_SanPham.asp to get total records on select
+    tempCountRecord =  Count_SanPham("")
 
+    tempCountRecord = Round(tempCountRecord/12)
 
+%>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //Pagination
+
+        $('#pagination-demo').twbsPagination({
+            //thẻ asp <% %> báo lỗi nhưng vẫn chạy được
+            totalPages: <%=tempCountRecord  %>,
+            visiblePages: 5,
+            href: '?page={{number}}'
+        });
+
+    });
+</script>
 
 <!--#include file="Master_Page/Footer.asp"-->

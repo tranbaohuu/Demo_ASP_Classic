@@ -1,8 +1,5 @@
 ﻿</div>
 
-
-
-
     <footer class="footer" style="background-color: #333333; width: 100%; height: 100%; color: white; bottom: 0; left: 0;">
         <div class="container">
             <br />
@@ -11,6 +8,5 @@
             <p class="text-muted" style="color: white;">&copy; @DateTime.Now.Year -Thiết kế và phát triển Trần Bảo Hữu</p>
         </div>
     </footer>
-
 </body>
 </html>

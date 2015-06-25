@@ -11,8 +11,8 @@
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
 */
 .dl-horizontal dt {
     white-space: normal;
@@ -24,8 +24,6 @@ select,
 textarea {
     max-width: 280px;
 }
-
-
 
 .banner {
     position: relative;
@@ -40,9 +38,6 @@ textarea {
         float: left;
     }
 
-
-
-
 .header-mathang {
     color: #333333;
 }
@@ -50,7 +45,6 @@ textarea {
     .header-mathang h1 small a {
         margin-top: -12px;
     }
-
 
 /*Caption của Flexible Slider*/
 
@@ -67,7 +61,6 @@ textarea {
     line-height: 18px;
     width: 100%;
 }
-
 
 /*Kích thước Modal*/
 
@@ -116,8 +109,6 @@ textarea {
     -ms-transition: 0.5s;
     transition: 0.5s;
 }
-
-
 
 .shrink {
     font-size: medium;
@@ -323,11 +314,9 @@ textarea {
 
 /*Z-Index cho autocomplete*/
 
-
 .ui-autocomplete {
     z-index: 2000 !important; /*Không biết sao set 2000 thì mới được*/
 }
-
 
 /*CSS override bootstrap navbar*/
 .navbar-default {
@@ -405,7 +394,6 @@ textarea {
         background-color: #333333;
     }
 }
-
 
 /*set kích thước ảnh của parallax*/
 .parallax-window {
