@@ -3,104 +3,105 @@
 
 <%
 
-    if IsEmpty(Session("username")) then
+if IsEmpty(Session("username")) then
 
-    Response.Redirect("Admin_Login.asp")
+	Response.Redirect("Admin_Login.asp")
 
-    end if
+end if
 
-    Dim conn
-    Dim recordSet
-    Set conn = Server.CreateObject("ADODB.Connection")
-    conn.ConnectionTimeout = 10
+Dim conn
+Dim recordSet
+Set conn = Server.CreateObject("ADODB.Connection")
+conn.ConnectionTimeout = 10
 
-    Set recordSet = Server.CreateObject("ADODB.Recordset")
+Set recordSet = Server.CreateObject("ADODB.Recordset")
 
-    tempPage = 1
+tempPage = 1
 
-    'get Query String to select, check null or not
+'get Query String to select, check null or not
 
-    if not   IsEmpty(Request("page")) then
-    tempPage = Request("page")
-    end if
+if not   IsEmpty(Request("page")) then
+	tempPage = Request("page")
+end if
 
-    'query = "select * from sanpham"
+'query = "select * from sanpham"
 
-    query = "SELECT sp.ID as ProductID,sp.TEN,sp.MOTA,sp.NGAYNHAP,sp.ID_LOAIHANG,sp.IMG_URL,lh.TENLOAI FROM dbo.sanpham sp,dbo.loaihang lh WHERE ID_LOAIHANG = lh.ID  ORDER BY sp.ID OFFSET (" & tempPage -1 & ")*12 ROWS FETCH NEXT 12 ROWS ONLY"
+query = "SELECT sp.ID as ProductID,sp.TEN,sp.MOTA,sp.NGAYNHAP,sp.ID_LOAIHANG,sp.IMG_URL,lh.TENLOAI FROM dbo.sanpham sp,dbo.loaihang lh WHERE ID_LOAIHANG = lh.ID  ORDER BY sp.ID OFFSET (" & tempPage -1 & ")*12 ROWS FETCH NEXT 12 ROWS ONLY"
 
-    conn.Open connectionString
+conn.Open connectionString
 
-    recordSet.Open query,conn
+recordSet.Open query,conn
 
-    if recordSet.EOF then
+if recordSet.EOF then
 
-    Response.Write("No Record")
+	Response.Write("No Record")
 
-    else
+else
 
 %>
 
-<h2>Sản phẩm</h2>
+<h2>S&#7843;n ph&#7849;m</h2>
 
 <p>
-    <a href="#" class="btn btn-success">Add</a>
+	<button type="button" id="btAddProduct" class="btn btn-success">Add</button>
 </p>
 
 <table class="table">
-    <tr>
-        <th>Mã sản phẩm
-        </th>
-        <th>Tên sản phẩm
-        </th>
+	<tr>
+		<th>Mã s&#7843;n ph&#7849;m
+		</th>
+		<th>Tên s&#7843;n ph&#7849;m
+		</th>
 
-        <th>Ngày nhập
-        </th>
-        <th>Loại sản phẩm
-        </th>
-        <th></th>
-        <th></th>
-    </tr>
+		<th>Ngày nh&#7853;p
+		</th>
+		<th>Lo&#7841;i s&#7843;n ph&#7849;m
+		</th>
+		<th></th>
+		<th></th>
+	</tr>
 
-    <%
+	<%
 
-    do while not  recordSet.EOF
-    %>
+	do while not  recordSet.EOF
+	%>
 
-    <tr>
+	<tr>
 
-        <td><%=recordSet("ProductID") %>
-        </td>
-        <td><%=recordSet("TEN") %>
-        </td>
-        <td><%=recordSet("NGAYNHAP") %>
-        </td>
-        <td><%=recordSet("TENLOAI") %>
-        </td>
+		<td><%=recordSet("ProductID") %>
+		</td>
+		<td><%=recordSet("TEN") %>
+		</td>
+		<td><%=recordSet("NGAYNHAP") %>
+		</td>
+		<td><%=recordSet("TENLOAI") %>
+		</td>
 
-        <!-- lỗi khó hiểu nếu chuyển vị trí IMG_URL lên đầu thì nó hiện và bị mất ngày nhập. Còn để ở đây thì ko hiển thị img url -->
+		<!-- l&#7895;i khó hi&#7875;u n&#7871;u chuy&#7875;n v&#7883; trí IMG_URL lên &#273;&#7847;u thì nó hi&#7879;n và b&#7883; m&#7845;t ngày nh&#7853;p. Còn &#273;&#7875; &#7903; &#273;ây thì ko hi&#7875;n th&#7883; img url -->
 
-        <td>
-            <img width="150" height="150" class="img-thumbnail" src="IMAGES/<%=recordSet("IMG_URL")%>" />
-        </td>
+		<td>
+			<img width="150" height="150" class="img-thumbnail" src="IMAGES/<%=recordSet("IMG_URL")%>" />
+		</td>
 
-        <td>
-            <a href="#" class="btn btn-primary">Detail</a>
-            <a href="#" class="btn btn-warning">Edit</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </td>
-    </tr>
-    <%
+		<td>
+			<a href="#" class="btn btn-primary">Detail</a>
+			<a href="#" class="btn btn-warning">Edit</a>
+			<!--<a href="#" id="deleteProduct" title="<%=recordSet("ProductID") %>" class="btn btn-danger">Delete</a>-->
+			<button type="button" title="<%=recordSet("ProductID") %>" class="btn btn-danger deleteProduct">Delete</button>
+		</td>
+	</tr>
+	<%
 
-    recordSet.MoveNext
-    loop
+		recordSet.MoveNext
+	loop
 
-    end if
+end if
 
-    recordSet.Close()
+recordSet.Close()
 
-    conn.Close()
+conn.Close()
 
-    %>
+	%>
 </table>
 
 <ul id="pagination-demo" class="pagination-sm"></ul>
@@ -109,26 +110,187 @@
 
 <%
 
-    'Call function from Process_SanPham.asp to get total records on select
-    tempCountRecord =  Count_SanPham("")
+'Call function from Process_SanPham.asp to get total records on select
+tempCountRecord =  Count_SanPham("")
 
-    tempCountRecord = Round(tempCountRecord/12)
+tempCountRecord = Round(tempCountRecord/12)
+conn.Close()
 
 %>
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        //Pagination
+	$(document).ready(function () {
+		//Pagination
 
-        $('#pagination-demo').twbsPagination({
-            //thẻ asp <% %> báo lỗi nhưng vẫn chạy được
-            totalPages: <%=tempCountRecord%>,
-            visiblePages: 5,
-            href: '?page={{number}}'
-        });
+		$('#pagination-demo').twbsPagination({
+			//th&#7867; asp <% %> báo l&#7895;i nh&#432;ng v&#7851;n ch&#7841;y &#273;&#432;&#7907;c
+			totalPages: <%=tempCountRecord%>,
+			visiblePages: 5,
+			href: '?page={{number}}'
+		});
 
-    });
+		$(".deleteProduct").click(function(){
+			var idProduct = $(this).attr("title");
+			$('#modal-delete').modal();
+
+			$("#modalID").val(idProduct);
+
+		});
+
+		$("#btAddProduct").click(function(){
+			$('#modal-add-edit').modal();
+
+		});
+
+		
+		//bộ lịch
+		//$(".datepicker").datepicker(
+		//{
+		//	dateFormat: "dd/mm/yy"
+		//});
+
+	});
 </script>
+
+<!-- Modal Delete -->
+<div class="modal fade container" id="modal-delete" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close"
+					data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="deleteModalLabel">Warning
+				</h4>
+			</div>
+			<form method="post" action="Processes/processAdmin.asp">
+				<div class="modal-body">
+					Are you want to delete?
+					<input name="id" type="hidden" id="modalID" />
+					<input name="action" type="hidden" value="deleteProduct" />
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default"
+						data-dismiss="modal">
+						Close
+					</button>
+					<button type="submit" class="btn btn-primary">
+						Sure
+					</button>
+				</div>
+			</form>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal Add -->
+<div class="modal fade container" id="modal-add-edit" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close"
+					data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="addModalLabel">Create Product
+				</h4>
+			</div>
+			<form method="get" action="Processes/processAdmin.asp">
+				<div class="modal-body">
+					<div class="form-horizontal">
+						<input type="hidden" name="action" value="addProduct" />
+						<div class="form-group">
+							<label class="control-label col-md-2">Product Name: </label>
+							<div class="col-md-10">
+								<input class="form-control" name="pName" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-2">Description: </label>
+							<div class="col-md-10">
+								<input name="des" class="form-control" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-2">Date In: </label>
+							<div class="col-md-10">
+								<input class="form-control datepicker" id="dateIN" name="dateIN" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-2">Product type: </label>
+							<div class="col-md-10">
+								<select class="form-control" name="pType">
+									<%
+										query = "Select * from loaihang"
+										conn.Open connectionString
+
+										recordSet.Open query,conn
+
+										if recordSet.EOF then
+
+											Response.Write("No Records")
+
+										else
+											do while not  recordSet.EOF
+									%>
+
+									<option value="<%=recordSet("ID") %>"><%=recordSet("TENLOAI") %></option>
+									<%
+
+
+
+												recordSet.MoveNext
+											loop
+
+										end if
+
+										recordSet.Close()
+
+										conn.Close()
+
+									%>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-2">Image URL</label>
+							<div class="col-md-10">
+
+								<input class="form-control" type="file" name="imgURL" id="file" style="width: 100%;" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-10">
+								<input type="submit" value="Create" class="btn btn-primary" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default"
+						data-dismiss="modal">
+						Close
+					</button>
+				</div>
+			</form>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <!--#include file="Master_Page/Footer_Admin.asp"-->
