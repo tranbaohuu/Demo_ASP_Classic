@@ -26,7 +26,7 @@ end if
 
 'query = "select * from sanpham"
 
-query = "SELECT sp.ID as ProductID,sp.TEN,sp.MOTA,sp.NGAYNHAP,sp.ID_LOAIHANG,sp.IMG_URL,lh.TENLOAI FROM dbo.sanpham sp,dbo.loaihang lh WHERE ID_LOAIHANG = lh.ID  ORDER BY sp.ID OFFSET (" & tempPage -1 & ")*12 ROWS FETCH NEXT 12 ROWS ONLY"
+query = "SELECT sp.ID as ProductID,sp.TEN,sp.MOTA,sp.NGAYNHAP,sp.ID_LOAIHANG,sp.IMG_URL,lh.TENLOAI FROM dbo.sanpham sp,dbo.loaihang lh WHERE ID_LOAIHANG = lh.ID  ORDER BY sp.ID DESC OFFSET (" & tempPage -1 & ")*12 ROWS FETCH NEXT 12 ROWS ONLY"
 
 conn.Open connectionString
 
@@ -40,22 +40,25 @@ else
 
 %>
 
-<h2>S&#7843;n ph&#7849;m</h2>
+<h2>Products manage</h2>
 
 <p>
+
 	<button type="button" id="btAddProduct" class="btn btn-success">Add</button>
+							   <a href="Upload_Image.asp" target="_blank" class="btn btn-primary">Upload Image</a>
+
 </p>
 
 <table class="table">
 	<tr>
-		<th>Mã s&#7843;n ph&#7849;m
+		<th>Product ID
 		</th>
-		<th>Tên s&#7843;n ph&#7849;m
+		<th>Product name
 		</th>
 
-		<th>Ngày nh&#7853;p
+		<th>Date In
 		</th>
-		<th>Lo&#7841;i s&#7843;n ph&#7849;m
+		<th>Product type
 		</th>
 		<th></th>
 		<th></th>
@@ -72,7 +75,7 @@ else
 		</td>
 		<td><%=recordSet("TEN") %>
 		</td>
-		<td><%=recordSet("NGAYNHAP") %>
+		<td><%=Day(recordSet("NGAYNHAP")) & "/" & Month(recordSet("NGAYNHAP")) & "/" & Year(recordSet("NGAYNHAP")) %>
 		</td>
 		<td><%=recordSet("TENLOAI") %>
 		</td>
@@ -84,9 +87,8 @@ else
 		</td>
 
 		<td>
-			<a href="#" class="btn btn-primary">Detail</a>
-			<a href="#" class="btn btn-warning">Edit</a>
-			<!--<a href="#" id="deleteProduct" title="<%=recordSet("ProductID") %>" class="btn btn-danger">Delete</a>-->
+			<!--<a href="#" class="btn btn-primary">Detail</a>-->
+			<a href="Edit_Product.asp?id=<%=recordSet("ProductID") %>" title="<%=recordSet("ProductID") %>" class="btn btn-warning editProduct">Edit</a>
 			<button type="button" title="<%=recordSet("ProductID") %>" class="btn btn-danger deleteProduct">Delete</button>
 		</td>
 	</tr>
@@ -143,12 +145,26 @@ conn.Close()
 
 		});
 
-		
 		//bộ lịch
-		//$(".datepicker").datepicker(
-		//{
-		//	dateFormat: "dd/mm/yy"
-		//});
+		$(".datepicker").datepicker(
+		{
+			dateFormat: "dd/mm/yy"
+		});
+
+		//Lấy hình đã chọn
+
+		$(".modal-body").find("img").click(function () {
+
+
+			var fileName = $(this).prop("alt");
+
+
+			$("#imgURL").val(fileName);
+
+			$('#myModal').modal("hide");
+
+			$("#imgEditPreview").prop("src", "/IMAGES/" + fileName);
+		});
 
 	});
 </script>
@@ -190,19 +206,19 @@ conn.Close()
 <!-- /.modal -->
 
 <!-- Modal Add -->
-<div class="modal fade container" id="modal-add-edit" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close"
-					data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="addModalLabel">Create Product
-				</h4>
-			</div>
-			<form method="get" action="Processes/processAdmin.asp">
+<form method="post" action="Processes/processAdmin.asp">
+	<div class="modal fade container" id="modal-add-edit" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close"
+						data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="addModalLabel">Create Product
+					</h4>
+				</div>
 				<div class="modal-body">
 					<div class="form-horizontal">
 						<input type="hidden" name="action" value="addProduct" />
@@ -248,8 +264,6 @@ conn.Close()
 									<option value="<%=recordSet("ID") %>"><%=recordSet("TENLOAI") %></option>
 									<%
 
-
-
 												recordSet.MoveNext
 											loop
 
@@ -267,14 +281,25 @@ conn.Close()
 						<div class="form-group">
 							<label class="control-label col-md-2">Image URL</label>
 							<div class="col-md-10">
+								<input type="hidden" id="imgURL" name="imgURL" value="" />
+								<img id="imgEditPreview" style="width: 320px; height: 240px;" src="" alt="No Image">
+								<!--<input class="form-control" type="file" name="imgURL" id="file" style="width: 100%;" />-->
+							</div>
+						</div>
 
-								<input class="form-control" type="file" name="imgURL" id="file" style="width: 100%;" />
+						<div class="form-group">
+							<label class="control-label col-md-2">Image</label>
+							<div class="col-md-10">
+								<button type="button" class="btn btn-warning" data-toggle="modal"
+									data-target="#myModal">
+									Choose Image
+								</button>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
-								<input type="submit" value="Create" class="btn btn-primary" />
+								<input type="submit" value="Add" class="btn btn-success" />
 							</div>
 						</div>
 					</div>
@@ -285,12 +310,81 @@ conn.Close()
 						Close
 					</button>
 				</div>
-			</form>
+			</div>
+			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-content -->
+		<!-- /.modal-dialog -->
 	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+	<!-- /.modal -->
+
+
+	<!-- Modal Choose Image -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close"
+						data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Ch&#7885;n &#7843;nh
+					</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+
+						<!--read all file in folder-->
+						<%
+dim fs,fo,x
+set fs=Server.CreateObject("Scripting.FileSystemObject")
+set fo=fs.GetFolder(Server.MapPath("/Images"))
+
+for each x in fo.files
+  'Print the name of all files in the test folder
+ ' Response.write(x.Name & "<br>")
+						%>
+						<div class="col-md-2">
+							<a href="#" class="thumbnail">
+								<img style="width: 320px; height: 240px;" src="IMAGES/<%=x.Name %>"
+									alt="<%=x.Name %>">
+							</a>
+						</div>
+						<%
+
+next
+
+set fo=nothing
+set fs=nothing
+						%>
+
+
+						<!--				@foreach (var item in @ViewBag.listURLHinh)
+					{
+						<div class="col-md-2">
+							<a href="#" class="thumbnail">
+								<img style="width: 320px; height: 240px;" src="~/IMAGES/@item"
+									alt="@item">
+							</a>
+						</div>
+						}-->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+							data-dismiss="modal">
+							&#272;óng
+						</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+</form>
+
+
 
 <!--#include file="Master_Page/Footer_Admin.asp"-->

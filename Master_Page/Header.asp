@@ -49,7 +49,8 @@
             ////autocomplete tbTimKiem
 
             //$("#tbTimKiem").autocomplete({
-            //    source: '@Url.Action("AutoCompleteSanPham", "NguoiDung")'
+            //    source: "GetProductName_Autocomplete()",
+
 
             //});
 

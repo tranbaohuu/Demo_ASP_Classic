@@ -88,11 +88,26 @@
 
 <%
 
+   
     'Call function from Process_SanPham.asp to get total records on select
+
+
     tempCountRecord =  Count_SanPham("")
 
     tempCountRecord = Round(tempCountRecord/12)
 
+conn.Close()
+
+
+
+     Dim temparr
+     temparr =  Products_AutoComplete()
+
+    giatri_1 = temparr(0)
+    giatri_2 = temparr(1)
+    giatri_3 = temparr(2)
+    giatri_4 = temparr(3)
+    giatri_5 = temparr(4)
 %>
 
 <script type="text/javascript">
@@ -107,7 +122,27 @@
             href: '?page={{number}}'
         });
 
+
+        $("#tbTimKiem").focus(function () {
+
+            $("#tbTimKiem").val("");
+
+        });
+
+        //autocomplete tbTimKiem
+
+        var arr = ["<%=giatri_1%>","<%=giatri_2%>","<%=giatri_3%>","<%=giatri_4%>","<%=giatri_5%>"];
+
+
+        $("#tbTimKiem").autocomplete({
+            source: arr
+
+
+        });
+        
+
     });
 </script>
+
 
 <!--#include file="Master_Page/Footer.asp"-->

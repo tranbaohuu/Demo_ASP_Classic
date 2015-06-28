@@ -31,4 +31,38 @@ public function Count_SanPham(id_loai)
 
 end function
 
+    public function Products_AutoComplete()
+
+     Dim tempArrayComplete(5)
+    tempI = 0
+    'Select Ten for Autocomplete
+     query = "Select top 5 TEN from sanpham"
+    conn.Open connectionString
+
+    recordSet.Open query,conn
+
+    if recordSet.EOF then
+
+    Response.Write("No Record")
+
+    else
+        do while not  recordSet.EOF
+
+    tempArrayComplete(tempI) = recordSet("TEN")
+
+    tempI = tempI + 1
+       recordSet.MoveNext
+    loop
+        end if
+
+    recordSet.Close()
+
+    conn.Close()
+
+
+       ' Response.Write(tempArrayComplete(1))
+    Products_AutoComplete = tempArrayComplete
+
+    end function
+
 %>
