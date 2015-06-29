@@ -7,7 +7,7 @@
     <script type="text/javascript" src="../Script/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="../Script/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../Script/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../Script/parallax.min.js"></script>
+    
     <script type="text/javascript" src="../Script/jquery.twbsPagination.min.js"></script>
 
     <link rel="stylesheet" href="../Css/bootstrap.min.css" />
@@ -110,17 +110,18 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 
-                    <li><a href="Index.asp"><i class="fa fa-home fa-lg"></i>&nbsp Trang Chủ</a></li>
-                    <li><a href="Products.asp"><i class="fa fa-gears fa-lg"></i>&nbsp Sản phẩm</a></li>
-                    <li><a><i class="fa fa-users fa-lg"></i>&nbsp Về chúng tôi</a></li>
+                   <li><a href="Index.asp"><i class="fa fa-home fa-lg"></i>&nbsp Home</a></li>
+                    <li><a href="Products.asp"><i class="fa fa-gears fa-lg"></i>&nbsp Products</a></li>
+                    <li><a href="About_Us.asp"><i class="fa fa-users fa-lg"></i>&nbsp About us</a></li>
 
-                    <li><a><i class="fa fa-user-plus fa-lg"></i>&nbsp Về chúng tôi</a></li>
                 </ul>
 
                 <div class="navbar-form navbar-right normal" id="formSearch" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="tbTimKiem" style="z-index: 999; display: inline;" name="tensp" placeholder="Tên máy" />
-                        <button type="submit" class="btn btn-default"><i class="fa fa-search fa-lg"></i></button>
+                        <form action="../Products.asp" method="get">
+                            <input type="text" class="form-control" id="tbTimKiem" style="z-index: 999; display: inline;" name="pName" placeholder="Tên máy" />
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search fa-lg"></i></button>
+                        </form>
                     </div>
                 </div>
             </div>

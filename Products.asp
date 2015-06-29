@@ -24,8 +24,16 @@
     tempPage = Request("page")
     end if
 
-    'query = "select * from sanpham"
     query = "SELECT * FROM dbo.sanpham ORDER BY ID OFFSET (" & tempPage -1 & ")*12 ROWS FETCH NEXT 12 ROWS only"
+
+
+    if not IsEmpty(Request("pName")) then
+    pName = Request("pName")
+
+    query = "SELECT * FROM dbo.sanpham where TEN LIKE N'%" & pName & "%'  ORDER BY ID OFFSET (" & tempPage -1 & ")*12 ROWS FETCH NEXT 12 ROWS only"
+    end if
+
+
     conn.Open connectionString
 
     recordSet.Open query,conn
@@ -88,15 +96,30 @@
 
 <%
 
+
+
    
     'Call function from Process_SanPham.asp to get total records on select
+    tempCountRecord = 0
+ 
 
+    
+    if not IsEmpty(Request("pName")) then
+    pName = Request("pName")
+    tempCountRecord =  Count_SanPham_By_Name(pName)
+    tempCountRecord = Round(tempCountRecord/12)
+    conn.Close()
+
+    else
 
     tempCountRecord =  Count_SanPham("")
-
     tempCountRecord = Round(tempCountRecord/12)
+    conn.Close()
 
-conn.Close()
+    end if
+
+
+
 
 
 

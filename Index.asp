@@ -101,11 +101,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 
-                    <li><a href="Index.asp"><i class="fa fa-home fa-lg"></i>&nbsp Trang Chủ</a></li>
-                    <li><a href="Products.asp"><i class="fa fa-gears fa-lg"></i>&nbsp Sản phẩm</a></li>
-                    <li><a><i class="fa fa-users fa-lg"></i>&nbsp Về chúng tôi</a></li>
+                    <li><a href="Index.asp"><i class="fa fa-home fa-lg"></i>&nbsp Home</a></li>
+                    <li><a href="Products.asp"><i class="fa fa-gears fa-lg"></i>&nbsp Products</a></li>
+                    <li><a href="About_Us.asp"><i class="fa fa-users fa-lg"></i>&nbsp About us</a></li>
 
-                    <li><a><i class="fa fa-user-plus fa-lg"></i>&nbsp Về chúng tôi</a></li>
                 </ul>
 
                 <div class="navbar-form navbar-right normal" id="formSearch" role="search">
@@ -239,6 +238,10 @@
             </div>
         </div>
 
+
+
+
+
         <div class="flexslider">
             <ul class="slides">
 
@@ -277,88 +280,127 @@
 
     recordSet.MoveNext
     loop
+
+                    recordSet.Close()
+                    conn.Close()
+
+    end if
                 %>
             </ul>
         </div>
 
-        <%
-    end if
 
-        %>
-
-        <br />
-        <br />
-        <br />
-
-        <!-- <div class="container body-content">
-            <div class="page-header header-mathang">
-                <h1>
-                    Mẫu khuôn
-                    <small id="smalltest">@Html.ActionLink("Xem thêm", "SanPham", "NguoiDung", new { id = 1 }, new { @class = "btn btn-success" })</small>
-                </h1>
-            </div>
-            <div class="row">
-
-                @foreach (var item in Model)
-                {
-                    if (item.ID_LOAIHANG == 1)
-                    {
-                        <div class="col-md-3">
-                            <div class="thumbnail">
-                                <div>
-
-                                    <p class="text-center">
-                                        @Html.ActionLink(item.TEN, "Detail_SanPham", "NguoiDung", new { Id = item.ID }, null)
-                                    </p>
-                                </div>
-
-                                <img class="img-thumbnail" data-original="#" width="320" height="240" alt="Không có hình" src="~/IMAGES/@Html.DisplayFor(itemModel => item.IMG_URL)" style="display: block; width: 320px; height: 240px;">
-                                <div class="caption">
-                                    <p>
-
-                                        @Html.ActionLink("Xem", "Detail_SanPham", "NguoiDung", new { Id = item.ID }, new { @class = "btn btn-primary btn-lg btn-block" })
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                }
-            </div>
-        </div>-->
-
-        <!--        <div class="page-header header-mathang">
-            <h1>
-                Mẫu máy
-                <small>@Html.ActionLink("Xem thêm", "SanPham", "NguoiDung", new { id = 2 }, new { @class = "btn btn-success" })</small>
+        <div class="page-header header-mathang">
+            <h1>Molds
+                    <small id="smalltest"><a class="btn btn-success">More</a></small>
             </h1>
         </div>
         <div class="row">
 
-            @foreach (var item in Model)
-            {
-                if (item.ID_LOAIHANG == 2)
-                {
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <div>
+            <%
+                     query = "select top 4 * from sanpham where ID_LOAIHANG = 1"
 
-                                <p class="text-center">
-                                    @Html.ActionLink(item.TEN, "Detail_SanPham", "NguoiDung", new { Id = item.ID }, null)
-                                </p>
-                            </div>
+    conn.Open connectionString
 
-                            <img class="img-thumbnail" data-original="#" width="320" height="240" alt="Không có hình" src="~/IMAGES/@Html.DisplayFor(itemModel => item.IMG_URL)" style="display: block; width: 320px; height: 240px;">
-                            <div class="caption">
-                                <p>
+    recordSet.Open query,conn
 
-                                    @Html.ActionLink("Xem", "Detail_SanPham", "NguoiDung", new { Id = item.ID }, new { @class = "btn btn-primary btn-lg btn-block" })
-                                </p>
-                            </div>
-                        </div>
+    if recordSet.EOF then
+
+    Response.Write("No Record")
+
+    else
+
+       do while not  recordSet.EOF
+                 
+            %>
+
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <div>
+
+                        <p class="text-center">
+                            <a href="#"><%=recordSet("TEN") %></a>
+                        </p>
                     </div>
-                }
-            }
-        </div>-->
+
+                    <img class="img-thumbnail" data-original="#" width="320" height="240" alt="Không có hình" src='/IMAGES/<%=recordSet("IMG_URL") %>' style="display: block; width: 320px; height: 240px;">
+                    <div class="caption">
+                        <p>
+                            <a href="#" class="btn btn-primary btn-lg btn-block">Detail</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <%
+                    
+                       
+       recordSet.MoveNext
+       loop
+
+
+
+                    recordSet.Close()
+                    conn.Close()
+
+    end if
+            %>
+        </div>
+
+        <div class="page-header header-mathang">
+            <h1>Machines
+                    <small id=""><a class="btn btn-success">More</a></small>
+            </h1>
+        </div>
+        <div class="row">
+
+            <%
+                     query = "select top 4 * from sanpham where ID_LOAIHANG = 2"
+
+    conn.Open connectionString
+
+    recordSet.Open query,conn
+
+    if recordSet.EOF then
+
+    Response.Write("No Record")
+
+    else
+
+       do while not  recordSet.EOF
+                 
+            %>
+
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <div>
+
+                        <p class="text-center">
+                            <a href="#"><%=recordSet("TEN") %></a>
+                        </p>
+                    </div>
+
+                    <img class="img-thumbnail" data-original="#" width="320" height="240" alt="Không có hình" src='/IMAGES/<%=recordSet("IMG_URL") %>' style="display: block; width: 320px; height: 240px;">
+                    <div class="caption">
+                        <p>
+                            <a href="#" class="btn btn-primary btn-lg btn-block">Detail</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <%
+                    
+                       
+       recordSet.MoveNext
+       loop
+
+
+
+                    recordSet.Close()
+                    conn.Close()
+
+    end if
+            %>
+        </div>
     </div>
 
     <footer class="footer" style="background-color: #333333; width: 100%; height: 100%; color: white; bottom: 0; left: 0;">
