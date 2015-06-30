@@ -1,9 +1,25 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <link rel="shortcut icon" href="Images/logo.png" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrator Page</title>
+    <!-- Cắt chuỗi để lấy header title -->
+    <% tempArr = Split(GetPath(),"/")
+	   tempArray2 = Split(tempArr(3),".")
+
+    %>
+
+    <title><%= tempArray2(0) %></title>
+
+    <%function GetPath()
+	query_string = request.ServerVariables("QUERY_STRING")
+	if query_string <> "" then
+		query_string = "?" & query_string
+	end if
+
+	GetPath = "http://" & request.ServerVariables("SERVER_NAME") & request.ServerVariables("URL") & query_string
+end function %>
 
     <script type="text/javascript" src="../Script/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="../Script/jquery-ui.min.js"></script>
@@ -30,17 +46,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="../ControlPanel.asp">Products Manage</a></li>
-                    <!--      @if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
-                    {
-                        string username = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
-
-                        if (username.Equals("admin"))
-                        {
-
-                            <li>@Html.ActionLink("Quản lý người dùng", "QuanLyNguoiDung", "HeThong")</li>
-
-                        }
-                    }-->
+                    <%
+                        if not IsEmpty(Session("username"))  then
+                        u = Session("username")
+                         if InStr(u,"admin") > 0 then %>
+                    <li><a href="../Employee_Manage.asp">Employee Manage</a></li>
+                    <% end if
+                        end if %>
                 </ul>
 
                 <% if not IsEmpty(Session("username")) then %>

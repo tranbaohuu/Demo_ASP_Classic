@@ -50,7 +50,7 @@ end if
 %>
 
 <h2>Edit Product</h2>
-<form action="Processes/processAdmin.asp" enctype="multipart/form-data" method="get">
+<form action="Processes/processAdmin.asp" enctype="multipart/form-data" method="post">
 	<div class="form-horizontal">
 		<hr />
 		<input type="hidden" name="action" value="editProduct" />
@@ -64,7 +64,7 @@ end if
 		</div>
 
 		<div class="form-group">
-			<label class="control-label col-md-2">Date In: </label>
+			<label class="control-label col-md-2">Description: </label>
 			<div class="col-md-10">
 				<input class="form-control" type="text" name="des" value="<%=des %>" />
 			</div>

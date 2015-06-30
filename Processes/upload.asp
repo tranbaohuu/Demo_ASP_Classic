@@ -123,6 +123,7 @@ Class UploadedFile
 	Public Sub SaveToDisk(sPath)
 		Dim oFS, oFile
 		Dim nIndex
+		Dim imageName
 	
 		If sPath = "" Or FileName = "" Then Exit Sub
 		If Mid(sPath, Len(sPath)) <> "\" Then sPath = sPath & "\"
@@ -130,10 +131,13 @@ Class UploadedFile
 		Set oFS = Server.CreateObject("Scripting.FileSystemObject")
 		If Not oFS.FolderExists(sPath) Then Exit Sub
 		
-		Set oFile = oFS.CreateTextFile(sPath & FileName, True)
+		imageName = "IMG_" & Day(Date) & "-" & Month(Date) & "-" & Year(Date) & "_" & Hour(Time) & "-" & Minute(Time) & "-" & Second(Time) & ".jpg"
+	
+
+		Set oFile = oFS.CreateTextFile(sPath & imageName, True)
 		
 		For nIndex = 1 to LenB(FileData)
-		    oFile.Write Chr(AscB(MidB(FileData,nIndex,1)))
+			oFile.Write Chr(AscB(MidB(FileData,nIndex,1)))
 		Next
 
 		oFile.Close

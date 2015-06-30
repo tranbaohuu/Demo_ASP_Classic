@@ -50,6 +50,23 @@ On Error Resume Next
 Else
 	Response.Write "Error can't edit product"
 End If
+    Case "addEmployee"
+	On Error Resume Next
+		eUsername = Request("eUsername")
+		ePassword = Request("ePassword")
+		dateIN = Request("dateIN")
+		Call AddEmployee(eUsername,ePassword,dateIN)
+	If err = 0 Then
+	Response.Write "Record Added"
+Else
+	Response.Write "Error can't add product"
+End If
+
+       Case "deleteEmployee"
+		eUsername = Request("eUsername")
+		Call DeleteEmployee(eUsername)
+
+
 End Select
 end if
 
@@ -113,7 +130,7 @@ end sub
 
 	conn.Close()
 
-	Response.Redirect("../ControlPanel.asp?ra=" & ra)
+	Response.Redirect("../ControlPanel.asp?raAdd=" & ra)
 
 end sub
 
@@ -126,55 +143,40 @@ sub EditProduct(id,pName,des,dateIN,pType,imgURL)
 
 	conn.Close()
 
-	Response.Redirect("../ControlPanel.asp?ra=" & ra)
+	Response.Redirect("../ControlPanel.asp?raEdit=" & ra)
 
 end sub
-%>
-<!-- #include file="upload.asp" -->
-<%
 
-	sub UploadImage()
-'NOTE - YOU MUST HAVE VBSCRIPT v5.0 INSTALLED ON YOUR WEB SERVER
-'	   FOR THIS LIBRARY TO FUNCTION CORRECTLY. YOU CAN OBTAIN IT
-'	   FREE FROM MICROSOFT WHEN YOU INSTALL INTERNET EXPLORER 5.0
-'	   OR LATER.
 
-' Create the FileUploader
-Dim Uploader, File
-Set Uploader = New FileUploader
 
-' This starts the upload process
-Uploader.Upload()
 
-'******************************************
-' Use [FileUploader object].Form to access
-' additional form variables submitted with
-' the file upload(s). (used below)
-'******************************************
-Response.Write "<b>Thank you for your upload " & Uploader.Form("fullname") & "</b><br>"
+		'Sub Delete Employee
+public sub DeleteEmployee(eUsername)
 
-' Check if any files were uploaded
-If Uploader.Files.Count = 0 Then
-	Response.Write "File(s) not uploaded."
-Else
-	' Loop through the uploaded files
-	For Each File In Uploader.Files.Items
+	query = "Delete nguoidung where tendangnhap = '" & eUsername & "'"
+	conn.Open connectionString
 
-		' Check where the user wants to save the file
-		If Uploader.Form("saveto") = "disk" Then
+	conn.Execute(query)
 
-			' Save the file to current path
-			File.SaveToDisk Server.MapPath("/Images")
+	conn.Close()
 
-		End If
+	Response.Redirect("../Employee_Manage.asp")
 
-		' Output the file details to the browser
-		Response.Write "File Uploaded: " & File.FileName & "<br>"
-		Response.Write "Size: " & File.FileSize & " bytes<br>"
-		Response.Write "Type: " & File.ContentType & "<br><br>"
-	Next
-End If
+end sub
 
-	end sub
+	'Sub Add Employee
+	 sub AddEmployee(eUsername,ePassword,dateIN)
+
+	ePassword = Encrypt(ePassword)
+
+	query = "INSERT INTO dbo.nguoidung( tendangnhap ,matkhau ,ngaynhap) VALUES  ( N'"& eUsername &"' , N'"& ePassword &"' ,  CONVERT(DATETIME, '" & dateIN & "', 103))"
+	conn.Open connectionString
+	Call conn.Execute(query,ra)
+
+	conn.Close()
+
+	Response.Redirect("../Employee_Manage.asp?raAdd=" & ra)
+
+end sub
 
 %>

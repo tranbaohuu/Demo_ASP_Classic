@@ -63,7 +63,7 @@ end function
      Dim tempArrayComplete(5)
     tempI = 0
     'Select Ten for Autocomplete
-     query = "Select top 5 TEN from sanpham"
+     query = "Select top 5 TEN from sanpham order by ID DESC"
     conn.Open connectionString
 
     recordSet.Open query,conn

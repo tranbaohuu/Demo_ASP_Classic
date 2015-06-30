@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Page ?</title>
-
+    <title>Home</title>
+    <link rel="shortcut icon" href="Images/logo.png"/>
     <meta charset="utf-8" />
     <script type="text/javascript" src="../Script/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="../Script/jquery-ui.min.js"></script>
@@ -107,12 +107,12 @@
 
                 </ul>
 
-                <div class="navbar-form navbar-right normal" id="formSearch" role="search">
+        <!--        <div class="navbar-form navbar-right normal" id="formSearch" role="search">
                     <div class="form-group">
                         <input type="text" class="form-control" id="tbTimKiem" style="z-index: 999; display: inline;" name="tensp" placeholder="Tên máy" />
                         <button type="submit" class="btn btn-default"><i class="fa fa-search fa-lg"></i></button>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </nav>
@@ -271,7 +271,7 @@
                 %>
 
                 <li>
-                    <a href="#">
+                    <a href="Products.asp?pName=<%=recordSet("TEN") %>">
                         <img class="" src="IMAGES/<%=recordSet("IMG_URL") %>" /></a>
                     <p class="flex-caption"><%=recordSet("TEN")  %></p>
                 </li>
@@ -292,7 +292,7 @@
 
         <div class="page-header header-mathang">
             <h1>Molds
-                    <small id="smalltest"><a class="btn btn-success">More</a></small>
+                    <small id="smalltest"><a href="Products.asp?pType=1" class="btn btn-success">More</a></small>
             </h1>
         </div>
         <div class="row">
@@ -326,7 +326,7 @@
                     <img class="img-thumbnail" data-original="#" width="320" height="240" alt="Không có hình" src='/IMAGES/<%=recordSet("IMG_URL") %>' style="display: block; width: 320px; height: 240px;">
                     <div class="caption">
                         <p>
-                            <a href="#" class="btn btn-primary btn-lg btn-block">Detail</a>
+                            <a href="Products.asp?pName=<%=recordSet("TEN") %>" class="btn btn-primary btn-lg btn-block">Detail</a>
                         </p>
                     </div>
                 </div>
@@ -348,7 +348,7 @@
 
         <div class="page-header header-mathang">
             <h1>Machines
-                    <small id=""><a class="btn btn-success">More</a></small>
+                    <small id=""><a href="Products.asp?pType=2" class="btn btn-success">More</a></small>
             </h1>
         </div>
         <div class="row">

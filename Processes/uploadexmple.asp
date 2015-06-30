@@ -41,7 +41,11 @@ Else
 		End If
 		
 		' Output the file details to the browser
-		Response.Write "File Uploaded: " & File.FileName & "<br>"
+	Dim imageName
+	imageName = "IMG_" & Day(Date) & "-" & Month(Date) & "-" & Year(Date) & "_" & Hour(Time) & "-" & Minute(Time) & "-" & Second(Time) & ".jpg"
+
+
+		Response.Write "File Uploaded: " & imageName & "<br>"
 		Response.Write "Size: " & File.FileSize & " bytes<br>"
 		Response.Write "Type: " & File.ContentType & "<br><br>"
 	Next
